@@ -1,7 +1,4 @@
 const mongoose = require('mongoose')
-const path = require('path')
-
-const coverImageBasePath = 'uploads/bookCovers'
 
 const bookSchema = new mongoose.Schema({
   title: {
@@ -24,7 +21,11 @@ const bookSchema = new mongoose.Schema({
     required: true,
     default: Date.now
   },
-  coverImageName: {
+  coverImage: {
+    type: Buffer, // file is now stored inside the database
+    required: true
+  },
+  coverImageType: {
     type: String,
     required: true
   },
@@ -35,11 +36,10 @@ const bookSchema = new mongoose.Schema({
   }
 })
 
-bookSchema.virtual('coverImagePath').get(function() { // derives its value from the schema variables. When book.coverImagePath is called, it gets the coverImageName. Normal function as we need access to this. Don't use arrow function
-  if (this.coverImageName != null) {
-    return path.join('/', coverImageBasePath, this.coverImageName)
+bookSchema.virtual('coverImagePath').get(function() { // lets us access it anywhere. derives its value from the schema variables. When book.coverImagePath is called, it gets the coverImageName. Normal function as we need access to this. Don't use arrow function
+  if (this.coverImage != null && this.coverImageType != null) { // if there's a path
+    return `data:${this.coverImageType};charset=utf-8;base64, ${this.coverImage.toString('base64')}` // append the cover filename to the basepath. `` is a template string so we can use variables
   }
 })
 
 module.exports = mongoose.model('Book', bookSchema)
-module.exports.coverImageBasePath = coverImageBasePath
