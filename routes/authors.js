@@ -76,11 +76,11 @@ router.post('/', async (req, res) => {
         author = await Author.findById(req.params.id)
         author.name = req.body.name
         await author.save()
-        res.redirect(`/authors/${newAuthor.id}`)
-      } catch {
+        res.redirect(`/authors/${author.id}`)
+      } catch (e){
           if (author == null) {
               res.redirect('/')
-          } else {
+          } else { console.log(e)
         res.render('authors/new', {
           author: author,
           errorMessage: 'Error Updating Author'
