@@ -48,19 +48,19 @@
 }
 
 .form-item textarea {
-    height: 100%;
-    resize: none;
+    height: 150%;
 }
 
 .form-item select option {
     background-color: black;
 }
 
-.form-item input:focus, .form0item select:focus, form-item textarea:focus {
+.form-item input:focus, .form-item select:focus, .form-item textarea:focus {
     border-color: var(--form-input-border-color-light);
 }
 
 .filepond--root {
+    height: 10em;
     font-family: 'Metropolis';
     margin-bottom: 0;
 }
